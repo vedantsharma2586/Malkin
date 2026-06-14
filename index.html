@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grand Birthday Quest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Dancing+Script:wght@600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="gradient-bg"></div>
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <button class="music-toggle" id="musicToggleBtn" title="Toggle Music">🔇</button>
+    <audio id="bgMusic" src="music.mp3" loop prefetch></audio>
+
+    <div class="achievement-toast" id="achievementToast">
+        <div class="achievement-icon">🏆</div>
+        <div class="achievement-text">
+            <span class="achievement-title">Quest Achievement Unlocked!</span>
+            <span class="achievement-name" id="achievementName">Title</span>
+        </div>
+    </div>
+
+    <div class="easter-egg-popup" id="easterEggPopup">
+        <h3>✨ Secret Easter Egg Mode Activated! ✨</h3>
+        <p>You found the hidden letter! You are truly the ultimate Queen of this universe! 👑</p>
+    </div>
+
+    <div class="quest-container">
+
+        <div id="stage0" class="quest-card active">
+            <h1 class="main-title">Halt! Who Goes There? 🛑</h1>
+            <p class="subtitle">Before you enter this magical realm, your identity must be verified by the high court of best friends.</p>
+            <div class="form-group">
+                <label for="initialPasswordInput" class="question-label">What do you call Me when I am being silly?</label>
+                <input type="text" id="initialPasswordInput" placeholder="Enter the secret nickname...">
+                <p class="error-msg" id="stage0Error">❌ Wrong answer! Hint: It starts with 'G' and means a cute donkey! Try again, silly.</p>
+            </div>
+            <button class="btn" onclick="checkInitialPassword()">Verify Identity 🔑</button>
+        </div>
+
+        <div id="stage1" class="quest-card">
+            <div class="profile-frame">
+                <div class="glow-ring"></div>
+                <img src="images/jiya1.jpg" alt="Birthday Girl Profile" class="profile-img">
+            </div>
+            <h1 class="main-title">Welcome, Malkin! 👑</h1>
+            <div class="story-text">
+                <p class="highlight">Today is an extraordinarily legendary day...</p>
+                <p>Because the absolute finest, funniest, and most wonderful person on earth is turning 18! 🥂</p>
+                <p>To celebrate this massive milestone, I have built an exclusive birthday quest just for you.</p>
+                <p class="instructions">Complete all the challenges ahead to unlock your final ultimate surprise!</p>
+            </div>
+            <button class="btn btn-large" onclick="nextStage(1, '🎖️ Royal Entry')">Begin the Quest ✨</button>
+        </div>
+
+        <div id="stage2" class="quest-card">
+            <h2 class="section-title">Challenge 1: The Ultimate Truth 👑</h2>
+            <p class="subtitle">The oracle mirror has been fogged up! Answer correctly to reveal the prettiest girl in the world.</p>
+            <div class="image-guess-container">
+                <img src="images/jiya2.jpg" alt="Mystery Guessing Image" id="guessImg" class="guess-img blurred">
+            </div>
+            <p class="question-label">Who holds the crown for the absolute prettiest smile across the universe?</p>
+            <div class="options-grid">
+                <button class="btn btn-option" onclick="wrongAnswer(this)">Miss Universe 🌎</button>
+                <button class="btn btn-option" onclick="wrongAnswer(this)">Hollywood Stars 🎬</button>
+                <button class="btn btn-option" onclick="correctGuessWho(this)">Our Birthday Queen (Malkin) 💖</button>
+                <button class="btn btn-option" onclick="wrongAnswer(this)">Anime Waifus 🌸</button>
+            </div>
+            <button id="stage2Next" class="btn hidden" onclick="nextStage(2, '🔮 Truth Seeker')">Unfog Completed! Proceed Next 👉</button>
+        </div>
+
+        <div id="stage3" class="quest-card">
+            <h2 class="section-title">Challenge 2: Catch the Love! 💖</h2>
+            <p class="subtitle">Pop 10 falling hearts out of the sky to power up your birthday portal generator!</p>
+            <div class="score-board">Hearts Collected: <span id="heartCount">0</span> / 10</div>
+            <div class="game-canvas" id="heartGameCanvas"></div>
+            <button id="stage3Next" class="btn hidden" onclick="nextStage(3, '⚡ Heart Collector Pro')">Portal Fully Charged! Onward 👉</button>
+        </div>
+
+        <div id="stage4" class="quest-card">
+            <h2 class="section-title">Challenge 3: Unlock the Vault 🔐</h2>
+            <p class="subtitle">Click on each locked gift box below to unveil sweet, hidden insider records about you.</p>
+            <div class="gifts-container">
+                <div class="gift-box" onclick="openGift(this, '🔒 Fact #1: Your laughter is instantly contagious and brightens up the room!')">🔒</div>
+                <div class="gift-box" onclick="openGift(this, '🔒 Fact #2: You are officially the best listener and secret keeper in the squad!')">🔒</div>
+                <div class="gift-box" onclick="openGift(this, '🔒 Fact #3: Turning 18 means you can officially vote, but you\'ve ruled this empire forever!')">🔒</div>
+            </div>
+            <button id="stage4Next" class="btn hidden" onclick="nextStage(4, '🔓 Cryptographer Extraordinaire')">Vault Unlocked! Let\'s Look Back 👉</button>
+        </div>
+
+        <div id="stage5" class="quest-card wide-card">
+            <h2 class="section-title">The Memory Lane Gallery 📸</h2>
+            <p class="subtitle">A visual compilation of beautiful moments. Click any polaroid frame to expand and read details closely.</p>
+            <div class="masonry-gallery">
+                <div class="polaroid-card" style="--rotation: -3deg;" onclick="openLightbox('images/jiya1.jpg', 'The Original Icon ✨')">
+                    <img src="images/jiya1.jpg" alt="Gallery Photo 1">
+                    <p class="caption">The Original Icon ✨</p>
+                </div>
+                <div class="polaroid-card" style="--rotation: 2deg;" onclick="openLightbox('images/jiya2.jpg', 'Unstoppable Vibes ⚡')">
+                    <img src="images/jiya2.jpg" alt="Gallery Photo 2">
+                    <p class="caption">Unstoppable Vibes ⚡</p>
+                </div>
+                <div class="polaroid-card" style="--rotation: -1deg;" onclick="openLightbox('images/jiya3.jpg', 'Pure Elegance 🌸')">
+                    <img src="images/jiya3.jpg" alt="Gallery Photo 3">
+                    <p class="caption">Pure Elegance 🌸</p>
+                </div>
+                <div class="polaroid-card" style="--rotation: 4deg;" onclick="openLightbox('images/jiya4.jpg', 'Chasing Dreams 🎈')">
+                    <img src="images/jiya4.jpg" alt="Gallery Photo 4">
+                    <p class="caption">Chasing Dreams 🎈</p>
+                </div>
+                <div class="polaroid-card" style="--rotation: -4deg;" onclick="openLightbox('images/jiya5.jpg', 'Radiant Energy 🌟')">
+                    <img src="images/jiya5.jpg" alt="Gallery Photo 5">
+                    <p class="caption">Radiant Energy 🌟</p>
+                </div>
+                <div class="polaroid-card" style="--rotation: 3deg;" onclick="openLightbox('images/jiya6.jpg', 'Unmatched Aesthetic ⚡')">
+                    <img src="images/jiya6.jpg" alt="Gallery Photo 6">
+                    <p class="caption">Unmatched Aesthetic ⚡</p>
+                </div>
+                <div class="polaroid-card" style="--rotation: -2deg;" onclick="openLightbox('images/jiya7.jpg', 'The Best Smiles Always 😄')">
+                    <img src="images/jiya7.jpg" alt="Gallery Photo 7">
+                    <p class="caption">The Best Smiles Always 😄</p>
+                </div>
+                <div class="polaroid-card" style="--rotation: 1deg;" onclick="openLightbox('images/jiya8.jpg', 'Simply Magical ✨')">
+                    <img src="images/jiya8.jpg" alt="Gallery Photo 8">
+                    <p class="caption">Simply Magical ✨</p>
+                </div>
+                <div class="polaroid-card" style="--rotation: -5deg;" onclick="openLightbox('images/jiya9.jpg', 'Queen Moves Only 👑')">
+                    <img src="images/jiya9.jpg" alt="Gallery Photo 9">
+                    <p class="caption">Queen Moves Only 👑</p>
+                </div>
+                <div class="polaroid-card" style="--rotation: 3deg;" onclick="openLightbox('images/jiya10.jpg', 'Chapter 18 Begins 🥂')">
+                    <img src="images/jiya10.jpg" alt="Gallery Photo 10">
+                    <p class="caption">Chapter 18 Begins 🥂</p>
+                </div>
+            </div>
+            <button class="btn" onclick="nextStage(5, '📸 Nostalgia Tripper')">Beautiful Memories! Next Game 👉</button>
+        </div>
+
+        <div id="stage6" class="quest-card">
+            <h2 class="section-title">Challenge 4: Cosmic Concentration 🧠</h2>
+            <p class="subtitle">Test your memory cells! Flip and match all identical birthday icons below to pass the gatekeeper.</p>
+            <div class="memory-game-grid" id="memoryGrid"></div>
+            <button id="stage6Next" class="btn hidden" onclick="nextStage(6, '🧠 Mastermind Brainiac')">Perfect Match! Final Password Gate 👉</button>
+        </div>
+
+        <div id="stage7" class="quest-card">
+            <h2 class="section-title">The Final Lock Box 🗝️</h2>
+            <p class="subtitle">You have proved your strength and intelligence. Now, enter the royal title given to you by Me to reveal the sacred script.</p>
+            <div class="form-group">
+                <input type="text" id="secretPasswordInput" placeholder="What is your royal name?">
+                <p class="error-msg" id="stage7Error">❌ Incorrect! Hint: It means the female boss/owner of the house! Think carefully.</p>
+            </div>
+            <button class="btn" onclick="checkSecretPassword()">Unlock Secret Document 📂</button>
+            <br>
+            <button id="stage7Next" class="btn hidden" onclick="nextStage(7, '🔑 Codebreaker Supreme')">Access Granted! Read Letter 👉</button>
+        </div>
+
+        <div id="stage8" class="quest-card">
+            <h2 class="section-title">A Letter From The Heart 📝</h2>
+            <div class="letter-box">
+                <div class="letter-content" id="typewriterText"></div>
+            </div>
+            <button id="stage8Next" class="btn hidden" onclick="nextStage(8, '💌 Heartstrings Pulled')">Finish Reading Letter 👉</button>
+        </div>
+
+        <div id="stage9" class="quest-card">
+            <h1 class="celebration-title animate-pulse">Quest Fully Conquered! 🏆</h1>
+            <p class="subtitle">You have successfully bypassed every test, obstacle, and puzzle across this journey with 100% precision!</p>
+            <p style="margin-bottom: 2rem;">Feel free to hit the celebration button to trigger visual effects, or step through the final portal below!</p>
+            
+            <button class="btn" onclick="triggerGrandCelebrationEffects()">Celebrate! ✨</button>
+            <br><br>
+            <button class="btn btn-large glow-btn" onclick="triggerFinalClimax()">The Ultimate Surprise 🎁</button>
+        </div>
+
+        <div id="stage10" class="quest-card final-glowing-card">
+            <div class="glowing-letter" id="finalLinesContainer">
+                <p class="hidden-line">And finally... ✨</p>
+                <p class="hidden-line">As you step into this beautiful new chapter of your life...</p>
+                <p class="hidden-line">Never forget how incredibly special, smart, and strong you are. 💖</p>
+                <p class="hidden-line">Keep shining bright and chasing every single dream.</p>
+                <p class="hidden-line">Always remember, your best friend has your back forever. 🤝</p>
+                
+                <h1 class="hidden-line final-wish intense-glow">🎉 Happy 18th Birthday, Malkin! 🎂</h1>
+                <div class="signature hidden-line">— Vedant</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="galleryLightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightboxImg" src="" alt="Expanded View Element">
+        <div id="lightboxCaption" class="lightbox-caption">Caption Text</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
